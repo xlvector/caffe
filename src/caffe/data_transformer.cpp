@@ -49,6 +49,7 @@ void DataTransformer<Dtype>::Transform(const Datum& datum,
   const int crop_size = param_.crop_size();
   const Dtype scale = param_.scale();
   const bool do_mirror = param_.mirror() && Rand(2);
+  const bool do_color = param_.color();
   const bool has_mean_file = param_.has_mean_file();
   const bool has_uint8 = data.size() > 0;
   const bool has_mean_values = mean_values_.size() > 0;
@@ -94,6 +95,7 @@ void DataTransformer<Dtype>::Transform(const Datum& datum,
   }
 
   Dtype datum_element;
+  int dcolor = (Rand(100) - 50) * do_color;
   int top_index, data_index;
   for (int c = 0; c < datum_channels; ++c) {
     for (int h = 0; h < height; ++h) {
@@ -110,6 +112,9 @@ void DataTransformer<Dtype>::Transform(const Datum& datum,
         } else {
           datum_element = datum.float_data(data_index);
         }
+        transformed_data[top_index] += dcolor;
+        if (transformed_data[top_index] < 0) transformed_data[top_index] = 0;
+        if (transformed_data[top_index] > 255) transformed_data[top_index] =  255;
         if (has_mean_file) {
           transformed_data[top_index] =
             (datum_element - mean[data_index]) * scale;
