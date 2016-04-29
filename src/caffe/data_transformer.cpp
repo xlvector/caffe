@@ -527,9 +527,9 @@ vector<int> DataTransformer<Dtype>::InferBlobShape(
 template <typename Dtype>
 void DataTransformer<Dtype>::InitRand() {
   const bool needs_rand = true;
-  //param_.mirror() ||
-  //    (phase_ == TRAIN && param_.crop_size()) ||
-  //    param_.color();
+  param_.mirror() ||
+      (phase_ == TRAIN && param_.crop_size()) ||
+      param_.color();
   if (needs_rand) {
     const unsigned int rng_seed = caffe_rng_rand();
     rng_.reset(new Caffe::RNG(rng_seed));

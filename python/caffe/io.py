@@ -78,6 +78,8 @@ def array_to_datum(arr, label=None):
         datum.float_data.extend(arr.flat)
     if label is not None:
         datum.label = label
+    if float_label is not None:
+        datum.float_label = float_label
     return datum
 
 
